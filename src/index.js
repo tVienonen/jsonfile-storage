@@ -1,20 +1,20 @@
-var FileStorage = require('./lib/storage/FileStorage.js').FileStorage;
+var JSONFileStorage = require('./lib/storage/JSONFileStorage.js').JSONFileStorage;
 
-var storage = new FileStorage(__dirname + '/data');
+var storage = new JSONFileStorage(__dirname + '/data');
+storage.removeBulk(storage.getFiles());
+// var data = [
+//     {
+//         name: 'Topi Vop',
+//     },
+//     {
+//         id: '000-123',
+//         name: 'Mr. Topi',
+//     }
 
-var data = [
-    {
-        name: 'Topi Vop',
-    },
-    {
-        id: '000-123',
-        name: 'Mr. Topi',
-    }
+// ]
+// storage.putBulk(data).then(res => {
 
-]
-storage.putBulk(data).then(res => {
-
-    storage.getBulk().then(res => {
-        console.log(res);
-    }) 
-})
+//     storage.getBulk().then(res => {
+//         console.log(res);
+//     }) 
+// })
