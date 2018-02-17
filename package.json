@@ -1,21 +1,29 @@
 {
   "name": "jsonfile-storage",
-  "version": "0.0.6",
+  "version": "0.0.14",
   "description": "",
   "main": "./src/index.js",
   "repository": {
     "url": "https://github.com/tVienonen/jsonfile-storage"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate-docs": "rm ./readme.md ./docs/api.md && jsdoc2md ./src/index.js >> ./docs/api.md && markdown-include ./markdown.json",
+    "prepare": "npm run generate-docs"
   },
-  "keywords": ["javscript", "json", "storage"],
+  "keywords": [
+    "javscript",
+    "json",
+    "storage"
+  ],
   "author": "Topi Vienonen",
   "license": "ISC",
   "dependencies": {
     "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "eslint": "^4.17.0"
+    "eslint": "^4.17.0",
+    "jsdoc-to-markdown": "^4.0.1",
+    "markdown-include": "^0.4.3"
   }
 }

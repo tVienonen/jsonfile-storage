@@ -1,7 +1,8 @@
 var fs = require('fs');
 var uuid = require('uuid/v4');
 /**
- * Class for handling json file based storage
+ * Creates a new instance of JSONFileStorage
+ * @constructor
  * @param {string} directoryPath 
  * The path of the folder where the data will be saved/retrieved
  * @throws Error if directoryPath is not a string or an empty string
@@ -13,8 +14,10 @@ function JSONFileStorage(directoryPath) {
     setDirectoryPath(directoryPath);
     /**
      * Get a single item from the directory with the id
+     * @memberOf JSONFileStorage
+     * @function JSONFileStorage#get
      * @param {string} id id of the item to get
-     * @returns {Promise<any>} a promise that  resolves into the file that matches the id. 
+     * @returns {Promise<any>} a promise that resolves into the file that matches the id.
      * The promise is rejected if the file is not found with the id. Or if there is an error parsing the JSON.
      */
     this.get = function(id) {
@@ -37,6 +40,8 @@ function JSONFileStorage(directoryPath) {
     }
     /**
      * Gets all the items from the directory and their content
+     * @memberOf JSONFileStorage
+     * @function JSONFileStorage#getBulk
      * @returns {Promise<Array<any>>}
      */
     this.getBulk = function() {
@@ -48,8 +53,10 @@ function JSONFileStorage(directoryPath) {
     }
     /**
      * Puts a single item in the directory
+     * @memberOf JSONFileStorage
+     * @function JSONFileStorage#put
      * @param {any} item item to be put in to the directory
-     * @param {boolean} updateListing should the files property be updated. Default is true
+     * @param {boolean} [updateListing=true] should the files property be updated. Default is true
      * @returns {Promise<any>} promise that resolves into the file that was put
      */
     this.put = function(item, updateListing = true) {
@@ -74,6 +81,8 @@ function JSONFileStorage(directoryPath) {
     }
     /**
      * Puts items in the directory in bulk
+     * @memberOf JSONFileStorage
+     * @function JSONFileStorage#putBulk
      * @param {Array<any>} items items to be put to the directory
      * @returns {Promise<Array<any>>} items putted to the directory
      * @throws Error if items is not an array
@@ -97,8 +106,10 @@ function JSONFileStorage(directoryPath) {
     }
     /**
      * removes the specified file from the directory
+     * @memberOf JSONFileStorage
+     * @function JSONFileStorage#remove
      * @param {string} id id of the file
-     * @param {boolean} updateListing should the file listing be updated
+     * @param {boolean} [updateListing=true] should the file listing be updated. Default is true
      */
     this.remove = function(id, updateListing = true) {
         id += /.json$/.test(id) ? '' : '.json';
@@ -123,6 +134,8 @@ function JSONFileStorage(directoryPath) {
     }
     /**
     * Deletes files in bulk
+    * @memberOf JSONFileStorage
+    * @function JSONFileStorage#removeBulk
     * @param {Array<string>} ids Array of ids for the files to be deleted
     * @returns {Promise<void>}
     */
@@ -142,11 +155,20 @@ function JSONFileStorage(directoryPath) {
         })
     }
     /**
+     * Get the json files inside the directory
+     * @memberOf JSONFileStorage
+     * @function JSONFileStorage#getFiles
      * @returns {Array<string>} files in the directory
      */
     this.getFiles = function() {
         return files.slice();
     }
+    /**
+     * Changes the directory used within this class
+     * @memberOf JSONFileStorage
+     * @function JSONFileStorage#changeDirectory
+     * @param {string} directoryPath path where to change to
+     */
     this.changeDirectory = function(directoryPath) {
         setDirectoryPath(directoryPath);
     }
@@ -156,13 +178,17 @@ function JSONFileStorage(directoryPath) {
      * Filters out all the files that dont have a .json extension
      * 
      * IMPORTANT: This operation is synchronous
-     * @returns {Array<string>} the names of the files
+     * @private
+     * @function getFileListing
+     * @returns {string[]} the names of the files
      */
     function getFileListing() {
         return fs.readdirSync(_directoryPath).filter(file => /.json$/.test(file));
     }
     /**
      * Sets a new directory for this class and updates the files
+     * @private
+     * @function setDirectoryPath
      * @param {string} directoryPath directory path to be set
      * @throws Error when no directoryPath is provided or when it is an empty string
      * @throws Error when reading files from the directory fails
