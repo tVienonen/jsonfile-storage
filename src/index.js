@@ -54,9 +54,10 @@ function JSONFileStorage(directoryPath) {
     this.put = function(item, updateListing = true) {
         if (!('id' in item)) {
             console.debug('No id field was set in the item. Generating id...');
+            item.id = uuid();
         }
         return new Promise((resolve, reject) => {
-            var filePath = _directoryPath + (item.id !== undefined ? item.id : uuid() + '.json');
+            var filePath = _directoryPath + item.id + '.json';
             fs.writeFile(filePath, JSON.stringify(item), err => {
                 if (err) {
                     console.error(err.message);
