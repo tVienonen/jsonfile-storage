@@ -11,7 +11,12 @@ function JSONFileStorage(directoryPath) {
     var _directoryPath
     
     setDirectoryPath(directoryPath);
-
+    /**
+     * Get a single item from the directory with the id
+     * @param {string} id id of the item to get
+     * @returns {Promise<any>} a promise that  resolves into the file that matches the id. 
+     * The promise is rejected if the file is not found with the id. Or if there is an error parsing the JSON.
+     */
     this.get = function(id) {
         return new Promise((resolve, reject) => {
             fs.readFile(_directoryPath + id, (err, data) => {
@@ -44,6 +49,7 @@ function JSONFileStorage(directoryPath) {
      * Puts a single item in the directory
      * @param {any} item item to be put in to the directory
      * @param {boolean} updateListing should the files property be updated. Default is true
+     * @returns {Promise<any>} promise that resolves into the file that was put
      */
     this.put = function(item, updateListing = true) {
         if (!('id' in item)) {
