@@ -176,4 +176,4 @@ function JSONFileStorage(directoryPath) {
     }
 }
 
-exports.JSONFileStorage = JSONFileStorage;
+module.exports = JSONFileStorage;
