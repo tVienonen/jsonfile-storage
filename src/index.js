@@ -18,6 +18,7 @@ function JSONFileStorage(directoryPath) {
      * The promise is rejected if the file is not found with the id. Or if there is an error parsing the JSON.
      */
     this.get = function(id) {
+        id += /.json$/.test(id) ? '' : '.json';
         return new Promise((resolve, reject) => {
             fs.readFile(_directoryPath + id, (err, data) => {
                 if (err) {
@@ -100,6 +101,7 @@ function JSONFileStorage(directoryPath) {
      * @param {boolean} updateListing should the file listing be updated
      */
     this.remove = function(id, updateListing = true) {
+        id += /.json$/.test(id) ? '' : '.json';
         return new Promise((resolve, reject) => {
             if (files.indexOf(id) === -1) {
                 console.error('File not found with for this id!', id);
