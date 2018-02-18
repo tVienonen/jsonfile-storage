@@ -148,9 +148,11 @@ function JSONFileStorage(directoryPath) {
             Promise.all(ids.map(id => this.remove(id, false)))
             .then(() => {
                 files = getFileListing();
+                resolve();
             })
             .catch(err => {
                 console.error(err.message);
+                reject(err.message);
             })
         })
     }
