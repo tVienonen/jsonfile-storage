@@ -7,7 +7,8 @@
     "url": "https://github.com/tVienonen/jsonfile-storage"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "nyc --reporter=html --reporter=text mocha",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "generate-docs": "rm ./readme.md ./docs/api.md && jsdoc2md ./src/index.js >> ./docs/api.md && markdown-include ./markdown.json",
     "prepare": "npm run generate-docs"
   },
@@ -23,9 +24,12 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
     "eslint": "^4.17.0",
     "jsdoc-to-markdown": "^4.0.1",
     "markdown-include": "^0.4.3",
-    "mocha": "^5.0.1"
+    "mocha": "^5.0.1",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^11.4.1"
   }
 }

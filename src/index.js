@@ -22,13 +22,13 @@ function JSONFileStorage(directoryPath) {
      */
     this.get = function(id) {
         id += /.json$/.test(id) ? '' : '.json';
-        return new Promise((resolve, reject) => {
-            fs.readFile(_directoryPath + id, (err, data) => {
+        return new Promise(function(resolve, reject) {
+            fs.readFile(_directoryPath + id, function(err, data) {
                 if (err) {
                     reject(err);
                 } else {
                     try {
-                        const dataJSON = JSON.parse(data.toString());
+                        var dataJSON = JSON.parse(data.toString());
                         resolve(dataJSON);
                     } catch (e) {
                         console.error('Error parsing JSON data');
@@ -45,10 +45,10 @@ function JSONFileStorage(directoryPath) {
      * @returns {Promise<Array<any>>}
      */
     this.getBulk = function() {
-        var promises = files.reduce((carry, current) => {
+        var promises = files.reduce(function(carry, current) {
             carry.push(this.get(current));
             return carry;
-        }, []);
+        }.bind(this), []);
         return Promise.all(promises);
     }
     /**
@@ -64,9 +64,9 @@ function JSONFileStorage(directoryPath) {
             console.debug('No id field was set in the item. Generating id...');
             item.id = uuid();
         }
-        return new Promise((resolve, reject) => {
+        return new Promise(function(resolve, reject) {
             var filePath = _directoryPath + item.id + '.json';
-            fs.writeFile(filePath, JSON.stringify(item), err => {
+            fs.writeFile(filePath, JSON.stringify(item), function(err) {
                 if (err) {
                     console.error(err.message);
                     reject(err);
@@ -91,15 +91,15 @@ function JSONFileStorage(directoryPath) {
         if (!Array.isArray(items)) {
             throw new Error('itemList must be an array of items!');
         }
-        var promises = items.map(item => this.put(item, false));
+        var promises = items.map(function(item) { return this.put(item, false) }.bind(this));
         var promiseContainer = Promise.all(promises);
-        return new Promise((resolve, reject) => {
+        return new Promise(function(resolve, reject) {
             promiseContainer
-            .then(items => {
+            .then(function(items) {
                 files = getFileListing();
                 resolve(items);
             })
-            .catch(err => {
+            .catch(function(err) {
                 console.error(err.message);
             });
         });
@@ -113,13 +113,13 @@ function JSONFileStorage(directoryPath) {
      */
     this.remove = function(id, updateListing = true) {
         id += /.json$/.test(id) ? '' : '.json';
-        return new Promise((resolve, reject) => {
+        return new Promise(function(resolve, reject) {
             if (files.indexOf(id) === -1) {
                 console.error('File not found with for this id!', id);
                 reject('File not found with for this id!');
                 return;
             }
-            fs.unlink(_directoryPath + id, err => {
+            fs.unlink(_directoryPath + id, function(err) {
                 if (err) {
                     console.error('There was an error removing the file', err.message);
                     reject(err);
@@ -140,21 +140,21 @@ function JSONFileStorage(directoryPath) {
     * @returns {Promise<void>}
     */
     this.removeBulk = function(ids) {
-        return new Promise((resolve, reject) => {
+        return new Promise(function(resolve, reject) {
             if (!Array.isArray(ids)) {
                 console.error('Ids must be an Array');
                 throw new Error('Ids must be an Array');
             }
-            Promise.all(ids.map(id => this.remove(id, false)))
-            .then(() => {
+            Promise.all(ids.map(function(id) { return this.remove(id, false) }.bind(this)))
+            .then(function() {
                 files = getFileListing();
                 resolve();
             })
-            .catch(err => {
+            .catch(function(err) {
                 console.error(err.message);
                 reject(err.message);
             })
-        })
+        }.bind(this))
     }
     /**
      * Get the json files inside the directory
@@ -185,7 +185,7 @@ function JSONFileStorage(directoryPath) {
      * @returns {string[]} the names of the files
      */
     function getFileListing() {
-        return fs.readdirSync(_directoryPath).filter(file => /.json$/.test(file));
+        return fs.readdirSync(_directoryPath).filter(function(file) { return /.json$/.test(file) });
     }
     /**
      * Sets a new directory for this class and updates the files

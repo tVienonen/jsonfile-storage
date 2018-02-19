@@ -1,5 +1,4 @@
 var JSONFileStorage = require('../src');
-
 var chai = require('chai');
 var assert = chai.assert,
     expect = chai.expect
@@ -10,7 +9,11 @@ var changeDirectoryName = '/test-data2/';
 
 afterEach(function() {
     var files = fs.readdirSync(__dirname + testDirectoryName);
-    files.forEach(file => fs.unlinkSync(__dirname + testDirectoryName + file));   
+    files.forEach(file => {
+        if (file !== '.gitignore') {
+            fs.unlinkSync(__dirname + testDirectoryName + file)
+        }
+    });   
 })
 
 describe('JSONFileStorage', function() {
