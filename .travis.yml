@@ -3,6 +3,8 @@ node_js:
 - lts/*
 after_success:
 - npm run coverage
+install: 
+  - npm install
 deploy:
   provider: npm
   email: topi.vienonen@gmail.com
