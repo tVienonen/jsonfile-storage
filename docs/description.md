@@ -3,7 +3,7 @@
 Package with a simple API for storing json files to a local directory.
 
 [![Coverage Status](https://coveralls.io/repos/github/tVienonen/jsonfile-storage/badge.svg?branch=master)](https://coveralls.io/github/tVienonen/jsonfile-storage?branch=master)
-
+[![Build Status](https://travis-ci.org/tVienonen/jsonfile-storage.svg?branch=master)](https://travis-ci.org/tVienonen/jsonfile-storage)
 # Getting Started
 
 `npm i jsonfile-storage`
